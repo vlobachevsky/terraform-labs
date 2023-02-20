@@ -14,6 +14,16 @@ provider "aws" {
   region  = "us-east-1"
 }
 
+# Create VPC
+resource "aws_vpc" "MyVPC" {
+  cidr_block = "10.0.0.0/16"
+
+  tags = {
+    Name = "MyVPC"
+  }
+}
+
+# Create EC2 instance
 resource "aws_instance" "app_server" {
   ami           = "ami-03ededff12e34e59e"
   instance_type = "t2.micro"
