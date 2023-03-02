@@ -95,6 +95,20 @@ resource "aws_internet_gateway" "my_igw" {
   }
 }
 
+# Add route to the internet gateway in main route table
+resource "aws_default_route_table" "my_vpc" {
+  default_route_table_id = aws_vpc.my_vpc.default_route_table_id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.example.id
+  }
+
+  tags = {
+    Name = "MAIN"
+  }
+}
+
 # Create EC2 instance
 # resource "aws_instance" "app_server" {
 #   ami           = "ami-03ededff12e34e59e"
