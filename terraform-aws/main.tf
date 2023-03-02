@@ -109,6 +109,23 @@ resource "aws_default_route_table" "my_vpc" {
   }
 }
 
+# Elastic IP
+resource "aws_eip" "nat_gateway" {
+  vpc = true
+}
+
+# NAT gateway
+resource "aws_nat_gateway" "my_nat_gw" {
+  allocation_id = aws_eip.nat_gateway.id
+  subnet_id     = aws_subnet.public_1a.id
+
+  tags = {
+    Name = "MyNATGW"
+  }
+
+  depends_on = [aws_internet_gateway.my_igw]
+}
+
 # Create EC2 instance
 # resource "aws_instance" "app_server" {
 #   ami           = "ami-03ededff12e34e59e"
