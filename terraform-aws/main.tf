@@ -66,12 +66,41 @@ resource "aws_subnet" "private_1b" {
   }
 }
 
-# Create EC2 instance
-resource "aws_instance" "app_server" {
-  ami           = "ami-03ededff12e34e59e"
-  instance_type = "t2.micro"
+# Route table for private subnets
+resource "aws_route_table" "private_rt" {
+  vpc_id = aws_vpc.my_vpc.id
 
   tags = {
-    Name = "ExampleAppServerInstance"
+    Name = "Private-RT"
   }
 }
+
+# Associations between the route table and private subnets
+resource "aws_route_table_association" "private_1a" {
+  subnet_id      = aws_subnet.private_1a.id
+  route_table_id = aws_route_table.private_rt
+}
+
+resource "aws_route_table_association" "private_1b" {
+  subnet_id      = aws_subnet.private_1b.id
+  route_table_id = aws_route_table.private_rt
+}
+
+# Internet gateway
+resource "aws_internet_gateway" "my_igw" {
+  vpc_id = aws_vpc.my_vpc.id
+
+  tags = {
+    Name = "MyIGW"
+  }
+}
+
+# Create EC2 instance
+# resource "aws_instance" "app_server" {
+#   ami           = "ami-03ededff12e34e59e"
+#   instance_type = "t2.micro"
+
+#   tags = {
+#     Name = "ExampleAppServerInstance"
+#   }
+# }
