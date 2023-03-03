@@ -134,6 +134,24 @@ resource "aws_security_group" "public_web" {
   description = "Public Web Access"
   vpc_id      = aws_vpc.my_vpc.id
 
+  # All traffic to all destinations
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  # All traffic to all destinations (just for now)
+  ingress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
   tags = {
     Name = "Public-Web"
   }
