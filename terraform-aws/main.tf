@@ -130,7 +130,7 @@ resource "aws_eip" "nat_gateway" {
 
 # Security group
 resource "aws_security_group" "public_web" {
-  name        = "Public_Web"
+  name        = "public-web"
   description = "Public Web Access"
   vpc_id      = aws_vpc.my_vpc.id
 
