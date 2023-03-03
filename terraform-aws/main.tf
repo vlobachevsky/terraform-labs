@@ -115,15 +115,28 @@ resource "aws_eip" "nat_gateway" {
 }
 
 # NAT gateway
-resource "aws_nat_gateway" "my_nat_gw" {
-  allocation_id = aws_eip.nat_gateway.id
-  subnet_id     = aws_subnet.public_1a.id
+# Can't create the resource in KK playground. 
+# Error: error creating EC2 NAT Gateway: UnauthorizedOperation: You are not authorized to perform this operation.
+# resource "aws_nat_gateway" "my_nat_gw" {
+#   allocation_id = aws_eip.nat_gateway.id
+#   subnet_id     = aws_subnet.public_1a.id
+
+#   tags = {
+#     Name = "MyNATGW"
+#   }
+
+#   depends_on = [aws_internet_gateway.my_igw]
+# }
+
+# Security group
+resource "aws_security_group" "public_web" {
+  name        = "Public_Web"
+  description = "Public Web Access"
+  vpc_id      = aws_vpc.my_vpc.id
 
   tags = {
-    Name = "MyNATGW"
+    Name = "Public-Web"
   }
-
-  depends_on = [aws_internet_gateway.my_igw]
 }
 
 # Create EC2 instance
