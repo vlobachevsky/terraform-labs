@@ -136,18 +136,18 @@ resource "aws_security_group" "public_web" {
 
   # All traffic to all destinations
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # All traffic to all destinations (just for now)
   ingress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
@@ -157,10 +157,22 @@ resource "aws_security_group" "public_web" {
 
 # EC2 instance in the Public-1A subnet
 resource "aws_instance" "host_1a" {
-  ami           = "ami-0dfcb1ef8550277af"
-  instance_type = "t2.micro"
-  subnet_id                   = aws_subnet.public_1a.id
-  vpc_security_group_ids      = [aws_security_group.public_web.id]
+  ami                    = "ami-0dfcb1ef8550277af"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.public_1a.id
+  vpc_security_group_ids = [aws_security_group.public_web.id]
+
+  user_data = <<-EOF
+  #!/bin/bash
+  yum update -y
+  yum install -y httpd
+  systemctl start httpd
+  systemctl enable httpd
+  INTERFACE=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/)
+  SUBNETID=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/${INTERFACE}/subnet-id)
+  echo '<center><h1>This instance is in the subnet wih ID: SUBNETID </h1></center>' > /var/www/html/index.txt
+  sed "s/SUBNETID/$SUBNETID/" /var/www/html/index.txt > /var/www/html/index.html
+  EOF
 
   tags = {
     Name = "Public 1A"
