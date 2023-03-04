@@ -155,12 +155,14 @@ resource "aws_security_group" "public_web" {
   }
 }
 
-# Create EC2 instance
-# resource "aws_instance" "app_server" {
-#   ami           = "ami-03ededff12e34e59e"
-#   instance_type = "t2.micro"
+# EC2 instance in the Public-1A subnet
+resource "aws_instance" "app_server" {
+  ami           = "ami-0dfcb1ef8550277af"
+  instance_type = "t2.micro"
+  subnet_id                   = aws_subnet.public_1a.id
+  vpc_security_group_ids      = [aws_security_group.public_web.id]
 
-#   tags = {
-#     Name = "ExampleAppServerInstance"
-#   }
-# }
+  tags = {
+    Name = "Public 1A"
+  }
+}
