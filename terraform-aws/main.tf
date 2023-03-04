@@ -157,10 +157,11 @@ resource "aws_security_group" "public_web" {
 
 # EC2 instance in the Public-1A subnet
 resource "aws_instance" "host_1a" {
-  ami                    = "ami-0dfcb1ef8550277af"
-  instance_type          = "t2.micro"
-  subnet_id              = aws_subnet.public_1a.id
-  vpc_security_group_ids = [aws_security_group.public_web.id]
+  ami                         = "ami-0dfcb1ef8550277af"
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.public_1a.id
+  vpc_security_group_ids      = [aws_security_group.public_web.id]
+  associate_public_ip_address = true
 
   user_data = <<-EOF
   #!/bin/bash
