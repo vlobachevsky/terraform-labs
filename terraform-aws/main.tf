@@ -201,3 +201,26 @@ resource "aws_instance" "host_1b" {
     Name = "Public 1b"
   }
 }
+
+resource "aws_instance" "private_1a" {
+  ami                         = "ami-0dfcb1ef8550277af"
+  instance_type               = "t2.micro"
+  subnet_id                   = aws_subnet.private_1a.id
+  vpc_security_group_ids      = [aws_security_group.public_web.id]
+
+  user_data = <<-EOF
+  #!/bin/bash
+  yum update -y
+  yum install -y httpd
+  systemctl start httpd
+  systemctl enable httpd
+  INTERFACE=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/)
+  SUBNETID=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/$${INTERFACE}/subnet-id)
+  echo '<center><h1>This instance is in the subnet wih ID: SUBNETID </h1></center>' > /var/www/html/index.txt
+  sed "s/SUBNETID/$SUBNETID/" /var/www/html/index.txt > /var/www/html/index.html
+  EOF
+
+  tags = {
+    Name = "Private 1a"
+  }
+}
