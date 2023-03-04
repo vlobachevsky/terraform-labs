@@ -169,7 +169,7 @@ resource "aws_instance" "host_1a" {
   systemctl start httpd
   systemctl enable httpd
   INTERFACE=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/)
-  SUBNETID=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/subnet-id)
+  SUBNETID=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/{INTERFACE}/subnet-id)
   EOF
 
   tags = {
