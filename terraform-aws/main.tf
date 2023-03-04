@@ -156,7 +156,7 @@ resource "aws_security_group" "public_web" {
 }
 
 # EC2 instance in the Public-1A subnet
-resource "aws_instance" "host_1a" {
+resource "aws_instance" "public_1a" {
   ami                         = "ami-0dfcb1ef8550277af"
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.public_1a.id
@@ -179,7 +179,7 @@ resource "aws_instance" "host_1a" {
   }
 }
 
-resource "aws_instance" "host_1b" {
+resource "aws_instance" "public_1b" {
   ami                         = "ami-0dfcb1ef8550277af"
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.public_1b.id
@@ -198,7 +198,7 @@ resource "aws_instance" "host_1b" {
   EOF
 
   tags = {
-    Name = "Public 1b"
+    Name = "Public 1B"
   }
 }
 
@@ -221,6 +221,6 @@ resource "aws_instance" "private_1a" {
   EOF
 
   tags = {
-    Name = "Private 1a"
+    Name = "Private 1A"
   }
 }
