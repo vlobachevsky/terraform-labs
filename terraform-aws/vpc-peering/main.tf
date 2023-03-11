@@ -101,3 +101,54 @@ resource "aws_vpc_peering_connection_accepter" "accepter" {
   vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
   auto_accept               = true
 }
+
+# Create security groups
+resource "aws_security_group" "vpcpeer_mgmt" {
+  name        = "vpcpeer-mgmt"
+  description = "VPCPEER-MGMT"
+  vpc_id      = aws_vpc.my_vpc_mgmt.id
+
+  # All traffic to all destinations (just for now)
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "ICMP"
+    cidr_blocks = ["10.1.0.0/16"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "SSH"
+    cidr_blocks = ["10.1.0.0/16"]
+  }
+
+  tags = {
+    Name = "VPCPEER-MGMT"
+  }
+}
+
+resource "aws_security_group" "vpcpeer_prod" {
+  name        = "vpcpeer-prod"
+  description = "VPCPEER-PROD"
+  vpc_id      = aws_vpc.my_vpc_prod.id
+
+  # All traffic to all destinations (just for now)
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "ICMP"
+    cidr_blocks = ["10.0.0.0/16"]
+  }
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "SSH"
+    cidr_blocks = ["10.0.0.0/16"]
+  }
+
+  tags = {
+    Name = "VPCPEER-PROD"
+  }
+}
