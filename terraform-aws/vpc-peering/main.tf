@@ -89,7 +89,7 @@ resource "aws_vpc_peering_connection" "owner" {
   vpc_id = "${aws_vpc.my_vpc_mgmt.id}"
   peer_vpc_id = "${aws_vpc.my_vpc_prod.id}"
 
-  tags {
+  tags = {
     Name = "MyPeer"
   }
 }
