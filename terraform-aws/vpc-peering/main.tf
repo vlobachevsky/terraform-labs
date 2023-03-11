@@ -183,7 +183,7 @@ resource "aws_default_route_table" "my_vpc_prod_default" {
 }
 
 # Launch instances
-resource "aws_instance" "public_1a" {
+resource "aws_instance" "public_1a_mgmt" {
   ami                    = "ami-0dfcb1ef8550277af"
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.public_1a_mgmt.id
@@ -194,7 +194,7 @@ resource "aws_instance" "public_1a" {
   }
 }
 
-resource "aws_instance" "public_1a" {
+resource "aws_instance" "public_1a_prod" {
   provider               = aws.us_east_2
   ami                    = "ami-0dfcb1ef8550277af"
   instance_type          = "t2.micro"
