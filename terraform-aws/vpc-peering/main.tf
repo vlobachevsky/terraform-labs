@@ -11,7 +11,7 @@ terraform {
 
 provider "aws" {
   profile = "default"
-  region = "us-east-1"
+  region  = "us-east-1"
 }
 
 provider "aws" {
@@ -61,7 +61,7 @@ resource "aws_subnet" "public_1b_mgmt" {
 }
 
 resource "aws_subnet" "public_1a_prod" {
-  provider   = aws.us_east_2
+  provider                = aws.us_east_2
   vpc_id                  = aws_vpc.my_vpc_prod.id
   cidr_block              = "10.1.1.0/24"
   availability_zone       = "us-east-2a"
@@ -73,7 +73,7 @@ resource "aws_subnet" "public_1a_prod" {
 }
 
 resource "aws_subnet" "public_1b_prod" {
-  provider   = aws.us_east_2
+  provider                = aws.us_east_2
   vpc_id                  = aws_vpc.my_vpc_prod.id
   cidr_block              = "10.1.2.0/24"
   availability_zone       = "us-east-2b"
@@ -86,10 +86,17 @@ resource "aws_subnet" "public_1b_prod" {
 
 # Create peering connection
 resource "aws_vpc_peering_connection" "owner" {
-  vpc_id = "${aws_vpc.my_vpc_mgmt.id}"
-  peer_vpc_id = "${aws_vpc.my_vpc_prod.id}"
+  vpc_id      = aws_vpc.my_vpc_mgmt.id
+  peer_vpc_id = aws_vpc.my_vpc_prod.id
 
   tags = {
     Name = "MyPeer"
   }
+}
+
+# Accept the peering connection
+resource "aws_vpc_peering_connection_accepter" "accepter" {
+  provider                  = aws.us_east_2
+  vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
+  auto_accept               = true
 }
