@@ -181,3 +181,27 @@ resource "aws_default_route_table" "my_vpc_prod_default" {
     Name = "MAIN"
   }
 }
+
+# Launch instances
+resource "aws_instance" "public_1a" {
+  ami                    = "ami-0dfcb1ef8550277af"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.public_1a_mgmt.id
+  vpc_security_group_ids = [aws_security_group.vpcpeer_mgmt.id]
+
+  tags = {
+    Name = "Public 1A"
+  }
+}
+
+resource "aws_instance" "public_1a" {
+  provider               = aws.us_east_2
+  ami                    = "ami-0dfcb1ef8550277af"
+  instance_type          = "t2.micro"
+  subnet_id              = aws_subnet.public_1a_prod.id
+  vpc_security_group_ids = [aws_security_group.vpcpeer_prod.id]
+
+  tags = {
+    Name = "Public 1A"
+  }
+}
