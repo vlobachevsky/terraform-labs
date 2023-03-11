@@ -129,6 +129,7 @@ resource "aws_security_group" "vpcpeer_mgmt" {
 }
 
 resource "aws_security_group" "vpcpeer_prod" {
+  provider    = aws.us_east_2
   name        = "vpcpeer-prod"
   description = "VPCPEER-PROD"
   vpc_id      = aws_vpc.my_vpc_prod.id
