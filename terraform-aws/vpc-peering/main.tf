@@ -117,9 +117,9 @@ resource "aws_security_group" "vpcpeer_mgmt" {
   }
 
   ingress {
-    from_port   = 0
+    from_port   = 22
     to_port     = 0
-    protocol    = "SSH"
+    protocol    = "TCP"
     cidr_blocks = ["10.1.0.0/16"]
   }
 
@@ -143,9 +143,9 @@ resource "aws_security_group" "vpcpeer_prod" {
   }
 
   ingress {
-    from_port   = 0
+    from_port   = 22
     to_port     = 0
-    protocol    = "SSH"
+    protocol    = "TCP"
     cidr_blocks = ["10.0.0.0/16"]
   }
 
