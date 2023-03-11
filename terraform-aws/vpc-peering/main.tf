@@ -64,7 +64,7 @@ resource "aws_subnet" "public_1a_prod" {
   provider   = aws.us_east_2
   vpc_id                  = aws_vpc.my_vpc_prod.id
   cidr_block              = "10.1.1.0/24"
-  availability_zone       = "us-east-1a"
+  availability_zone       = "us-east-2a"
   map_public_ip_on_launch = true
 
   tags = {
@@ -76,7 +76,7 @@ resource "aws_subnet" "public_1b_prod" {
   provider   = aws.us_east_2
   vpc_id                  = aws_vpc.my_vpc_prod.id
   cidr_block              = "10.1.2.0/24"
-  availability_zone       = "us-east-1b"
+  availability_zone       = "us-east-2b"
   map_public_ip_on_launch = true
 
   tags = {
