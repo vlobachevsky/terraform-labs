@@ -83,3 +83,13 @@ resource "aws_subnet" "public_1b_prod" {
     Name = "Public-1B"
   }
 }
+
+# Create peering connection
+resource "aws_vpc_peering_connection" "owner" {
+  vpc_id = "${aws_vpc.my_vpc_mgmt.id}"
+  peer_vpc_id = "${aws_vpc.my_vpc_prod.id}"
+
+  tags {
+    Name = "MyPeer"
+  }
+}
