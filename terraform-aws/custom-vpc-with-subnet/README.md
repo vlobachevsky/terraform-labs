@@ -1,0 +1,1 @@
+obsidian://open?vault=aws-saa&file=VPC%2FLab%20-%20Create%20a%20custom%20VPC%20with%20subnets
