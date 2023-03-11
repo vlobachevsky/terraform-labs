@@ -11,18 +11,18 @@ terraform {
 
 provider "aws" {
   # profile = "default"
-  alias = "us_east_1"
-  region  = "us-east-1"
+  alias  = "us_east_1"
+  region = "us-east-1"
 }
 
 provider "aws" {
-  alias = "us_east_2"
-  region  = "us-east-2"
+  alias  = "us_east_2"
+  region = "us-east-2"
 }
 
 # Create VPC
 resource "aws_vpc" "my_vpc_mgmt" {
-  provider = "aws.us_east_1"
+  provider   = aws.us_east_1
   cidr_block = "10.0.0.0/16"
 
   tags = {
@@ -31,7 +31,7 @@ resource "aws_vpc" "my_vpc_mgmt" {
 }
 
 resource "aws_vpc" "my_vpc_prod" {
-  provider = "aws.us_east_2"
+  provider   = aws.us_east_2
   cidr_block = "10.1.0.0/16"
 
   tags = {
