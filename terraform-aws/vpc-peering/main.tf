@@ -196,7 +196,7 @@ resource "aws_instance" "public_1a_mgmt" {
 
 resource "aws_instance" "public_1a_prod" {
   provider               = aws.us_east_2
-  ami                    = "ami-0dfcb1ef8550277af"
+  ami                    = "ami-00eeedc4036573771"
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.public_1a_prod.id
   vpc_security_group_ids = [aws_security_group.vpcpeer_prod.id]
