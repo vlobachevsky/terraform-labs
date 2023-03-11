@@ -88,6 +88,7 @@ resource "aws_subnet" "public_1b_prod" {
 resource "aws_vpc_peering_connection" "owner" {
   vpc_id      = aws_vpc.my_vpc_mgmt.id
   peer_vpc_id = aws_vpc.my_vpc_prod.id
+  peer_region = "us-east-2"
 
   tags = {
     Name = "MyPeer"
