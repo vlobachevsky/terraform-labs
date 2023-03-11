@@ -153,3 +153,31 @@ resource "aws_security_group" "vpcpeer_prod" {
     Name = "VPCPEER-PROD"
   }
 }
+
+# Add route to the peering connection to default route table
+resource "aws_default_route_table" "my_vpc_mgmt_default" {
+  default_route_table_id = aws_vpc.my_vpc_mgmt.default_route_table_id
+
+  route {
+    cidr_block                = "10.1.0.0/16"
+    vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
+  }
+
+  tags = {
+    Name = "MAIN"
+  }
+}
+
+resource "aws_default_route_table" "my_vpc_prod_default" {
+  provider               = aws.us_east_2
+  default_route_table_id = aws_vpc.my_vpc_prod.default_route_table_id
+
+  route {
+    cidr_block                = "10.0.0.0/16"
+    vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
+  }
+
+  tags = {
+    Name = "MAIN"
+  }
+}
