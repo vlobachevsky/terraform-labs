@@ -103,6 +103,32 @@ resource "aws_vpc_peering_connection_accepter" "accepter" {
 }
 
 # Create security groups
+resource "aws_security_group" "public_web" {
+  name        = "public-web"
+  description = "Public Web Access"
+  vpc_id      = aws_vpc.my_vpc_mgmt.id
+
+  # All traffic to all destinations
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # All traffic to all destinations (just for now)
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "Public-Web"
+  }
+}
+
 resource "aws_security_group" "vpcpeer_mgmt" {
   name        = "vpcpeer-mgmt"
   description = "VPCPEER-MGMT"
@@ -187,7 +213,7 @@ resource "aws_instance" "public_1a_mgmt" {
   ami                    = "ami-0dfcb1ef8550277af"
   instance_type          = "t2.micro"
   subnet_id              = aws_subnet.public_1a_mgmt.id
-  vpc_security_group_ids = [aws_security_group.vpcpeer_mgmt.id]
+  vpc_security_group_ids = [aws_security_group.public_web.id, aws_security_group.vpcpeer_mgmt.id]
 
   tags = {
     Name = "Public 1A"
