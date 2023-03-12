@@ -194,6 +194,15 @@ resource "aws_default_route_table" "my_vpc_mgmt_default" {
   }
 }
 
+# Create internet gateway
+resource "aws_internet_gateway" "my_igw_mgmt" {
+  vpc_id = aws_vpc.my_vpc_mgmt.id
+
+  tags = {
+    Name = "MyIGW"
+  }
+}
+
 resource "aws_default_route_table" "my_vpc_prod_default" {
   provider               = aws.us_east_2
   default_route_table_id = aws_vpc.my_vpc_prod.default_route_table_id
@@ -201,6 +210,11 @@ resource "aws_default_route_table" "my_vpc_prod_default" {
   route {
     cidr_block                = "10.0.0.0/16"
     vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
+  }
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.my_igw_mgmt.id
   }
 
   tags = {
