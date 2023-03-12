@@ -28,14 +28,14 @@ resource "aws_vpc" "my_vpc_mgmt" {
   }
 }
 
-resource "aws_vpc" "my_vpc_prod" {
-  provider   = aws.us_east_2
-  cidr_block = "10.1.0.0/16"
+# resource "aws_vpc" "my_vpc_prod" {
+#   provider   = aws.us_east_2
+#   cidr_block = "10.1.0.0/16"
 
-  tags = {
-    Name = "MyVPC-PROD"
-  }
-}
+#   tags = {
+#     Name = "MyVPC-PROD"
+#   }
+# }
 
 # Create subnets
 resource "aws_subnet" "public_1a_mgmt" {
@@ -60,47 +60,47 @@ resource "aws_subnet" "public_1b_mgmt" {
   }
 }
 
-resource "aws_subnet" "public_1a_prod" {
-  provider                = aws.us_east_2
-  vpc_id                  = aws_vpc.my_vpc_prod.id
-  cidr_block              = "10.1.1.0/24"
-  availability_zone       = "us-east-2a"
-  map_public_ip_on_launch = true
+# resource "aws_subnet" "public_1a_prod" {
+#   provider                = aws.us_east_2
+#   vpc_id                  = aws_vpc.my_vpc_prod.id
+#   cidr_block              = "10.1.1.0/24"
+#   availability_zone       = "us-east-2a"
+#   map_public_ip_on_launch = true
 
-  tags = {
-    Name = "Public-1A"
-  }
-}
+#   tags = {
+#     Name = "Public-1A"
+#   }
+# }
 
-resource "aws_subnet" "public_1b_prod" {
-  provider                = aws.us_east_2
-  vpc_id                  = aws_vpc.my_vpc_prod.id
-  cidr_block              = "10.1.2.0/24"
-  availability_zone       = "us-east-2b"
-  map_public_ip_on_launch = true
+# resource "aws_subnet" "public_1b_prod" {
+#   provider                = aws.us_east_2
+#   vpc_id                  = aws_vpc.my_vpc_prod.id
+#   cidr_block              = "10.1.2.0/24"
+#   availability_zone       = "us-east-2b"
+#   map_public_ip_on_launch = true
 
-  tags = {
-    Name = "Public-1B"
-  }
-}
+#   tags = {
+#     Name = "Public-1B"
+#   }
+# }
 
-# Create peering connection
-resource "aws_vpc_peering_connection" "owner" {
-  vpc_id      = aws_vpc.my_vpc_mgmt.id
-  peer_vpc_id = aws_vpc.my_vpc_prod.id
-  peer_region = "us-east-2"
+# # Create peering connection
+# resource "aws_vpc_peering_connection" "owner" {
+#   vpc_id      = aws_vpc.my_vpc_mgmt.id
+#   peer_vpc_id = aws_vpc.my_vpc_prod.id
+#   peer_region = "us-east-2"
 
-  tags = {
-    Name = "MyPeer"
-  }
-}
+#   tags = {
+#     Name = "MyPeer"
+#   }
+# }
 
-# Accept the peering connection
-resource "aws_vpc_peering_connection_accepter" "accepter" {
-  provider                  = aws.us_east_2
-  vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
-  auto_accept               = true
-}
+# # Accept the peering connection
+# resource "aws_vpc_peering_connection_accepter" "accepter" {
+#   provider                  = aws.us_east_2
+#   vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
+#   auto_accept               = true
+# }
 
 # Create security groups
 resource "aws_security_group" "public_web" {
@@ -154,31 +154,31 @@ resource "aws_security_group" "vpcpeer_mgmt" {
   }
 }
 
-resource "aws_security_group" "vpcpeer_prod" {
-  provider    = aws.us_east_2
-  name        = "vpcpeer-prod"
-  description = "VPCPEER-PROD"
-  vpc_id      = aws_vpc.my_vpc_prod.id
+# resource "aws_security_group" "vpcpeer_prod" {
+#   provider    = aws.us_east_2
+#   name        = "vpcpeer-prod"
+#   description = "VPCPEER-PROD"
+#   vpc_id      = aws_vpc.my_vpc_prod.id
 
-  # All traffic to all destinations (just for now)
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "ICMP"
-    cidr_blocks = ["10.0.0.0/16"]
-  }
+#   # All traffic to all destinations (just for now)
+#   ingress {
+#     from_port   = 0
+#     to_port     = 0
+#     protocol    = "ICMP"
+#     cidr_blocks = ["10.0.0.0/16"]
+#   }
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "TCP"
-    cidr_blocks = ["10.0.0.0/16"]
-  }
+#   ingress {
+#     from_port   = 22
+#     to_port     = 22
+#     protocol    = "TCP"
+#     cidr_blocks = ["10.0.0.0/16"]
+#   }
 
-  tags = {
-    Name = "VPCPEER-PROD"
-  }
-}
+#   tags = {
+#     Name = "VPCPEER-PROD"
+#   }
+# }
 
 # Add route to the peering connection to default route table
 resource "aws_default_route_table" "my_vpc_mgmt_default" {
@@ -203,24 +203,24 @@ resource "aws_internet_gateway" "my_igw_mgmt" {
   }
 }
 
-resource "aws_default_route_table" "my_vpc_prod_default" {
-  provider               = aws.us_east_2
-  default_route_table_id = aws_vpc.my_vpc_prod.default_route_table_id
+# resource "aws_default_route_table" "my_vpc_prod_default" {
+#   provider               = aws.us_east_2
+#   default_route_table_id = aws_vpc.my_vpc_prod.default_route_table_id
 
-  route {
-    cidr_block                = "10.0.0.0/16"
-    vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
-  }
+#   route {
+#     cidr_block                = "10.0.0.0/16"
+#     vpc_peering_connection_id = aws_vpc_peering_connection.owner.id
+#   }
 
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.my_igw_mgmt.id
-  }
+#   route {
+#     cidr_block = "0.0.0.0/0"
+#     gateway_id = aws_internet_gateway.my_igw_mgmt.id
+#   }
 
-  tags = {
-    Name = "MAIN"
-  }
-}
+#   tags = {
+#     Name = "MAIN"
+#   }
+# }
 
 # Launch instances
 resource "aws_instance" "public_1a_mgmt" {
@@ -234,14 +234,14 @@ resource "aws_instance" "public_1a_mgmt" {
   }
 }
 
-resource "aws_instance" "public_1a_prod" {
-  provider               = aws.us_east_2
-  ami                    = "ami-00eeedc4036573771"
-  instance_type          = "t2.micro"
-  subnet_id              = aws_subnet.public_1a_prod.id
-  vpc_security_group_ids = [aws_security_group.vpcpeer_prod.id]
+# resource "aws_instance" "public_1a_prod" {
+#   provider               = aws.us_east_2
+#   ami                    = "ami-00eeedc4036573771"
+#   instance_type          = "t2.micro"
+#   subnet_id              = aws_subnet.public_1a_prod.id
+#   vpc_security_group_ids = [aws_security_group.vpcpeer_prod.id]
 
-  tags = {
-    Name = "Public 1A"
-  }
-}
+#   tags = {
+#     Name = "Public 1A"
+#   }
+# }
