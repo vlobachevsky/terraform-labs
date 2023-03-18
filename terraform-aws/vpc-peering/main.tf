@@ -49,17 +49,6 @@ resource "aws_subnet" "public_1a_mgmt" {
   }
 }
 
-# resource "aws_subnet" "public_1b_mgmt" {
-#   vpc_id                  = aws_vpc.my_vpc_mgmt.id
-#   cidr_block              = "10.0.2.0/24"
-#   availability_zone       = "us-east-1b"
-#   map_public_ip_on_launch = true
-
-#   tags = {
-#     Name = "Public-1B"
-#   }
-# }
-
 resource "aws_subnet" "public_1a_prod" {
   provider                = aws.us_east_2
   vpc_id                  = aws_vpc.my_vpc_prod.id
@@ -71,18 +60,6 @@ resource "aws_subnet" "public_1a_prod" {
     Name = "Public-1A"
   }
 }
-
-# resource "aws_subnet" "public_1b_prod" {
-#   provider                = aws.us_east_2
-#   vpc_id                  = aws_vpc.my_vpc_prod.id
-#   cidr_block              = "10.1.2.0/24"
-#   availability_zone       = "us-east-2b"
-#   map_public_ip_on_launch = true
-
-#   tags = {
-#     Name = "Public-1B"
-#   }
-# }
 
 # Create peering connection
 resource "aws_vpc_peering_connection" "owner" {
@@ -189,6 +166,7 @@ resource "aws_internet_gateway" "my_igw_mgmt" {
   }
 }
 
+# Add routes to main route table for the VPCs
 resource "aws_default_route_table" "my_vpc_mgmt_default" {
   default_route_table_id = aws_vpc.my_vpc_mgmt.default_route_table_id
 
