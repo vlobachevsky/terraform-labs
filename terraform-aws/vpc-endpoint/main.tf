@@ -126,7 +126,7 @@ resource "aws_instance" "public_1a_mgmt" {
 # S3 Gateway endpoint 
 resource "aws_vpc_endpoint" "s3" {
   vpc_id       = aws_vpc.my_vpc_mgmt.id
-  service_name = "com.amazonws.us-east-1.s3"
+  service_name = "com.amazonaws.us-east-1.s3"
 }
 
 # Endpoint association for route table
