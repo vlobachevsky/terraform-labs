@@ -1,0 +1,1 @@
+obsidian://open?vault=aws-saa&file=VPC%2FLab%20-%20VPC%20Flow%20Logs
