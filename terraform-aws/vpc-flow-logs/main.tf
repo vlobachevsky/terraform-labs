@@ -87,8 +87,8 @@ resource "aws_security_group" "public_web" {
   }
 
   ingress {
-    from_port   = 430
-    to_port     = 430
+    from_port   = 443
+    to_port     = 443
     protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
