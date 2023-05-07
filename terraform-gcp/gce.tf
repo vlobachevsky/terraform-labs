@@ -1,18 +1,5 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "3.12.0"
-    }
-  }
-}
-
-provider "google" {
-  credentials = file(var.credentials_file)
-
-  project = var.project
-  region  = var.region
-  zone    = var.zone
+locals {
+  gcs_backet = "gs://${var.project_id}-bucket-1"
 }
 
 resource "google_compute_instance_template" "default" {
@@ -20,7 +7,7 @@ resource "google_compute_instance_template" "default" {
   machine_type = "e2-medium"
 
   disk {
-    source_image = "debian-cloud/debian-9"
+    source_image = "debian-cloud/debian-10"
   }
 
   network_interface {
